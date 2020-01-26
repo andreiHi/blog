@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 export class LoginPageComponent implements OnInit {
   form: FormGroup;
   submitted = false;
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(public auth: AuthService, private router: Router) { }
   minLength  = 6;
   validationErrors = {
     email: [
@@ -47,7 +47,9 @@ export class LoginPageComponent implements OnInit {
       () => {
         this.form.reset();
         this.router.navigate(['/admin', 'dashboard']);
+        this.submitted = false;
+      }, () => {
+        this.submitted = false;
       });
-    this.submitted = false;
   }
 }
