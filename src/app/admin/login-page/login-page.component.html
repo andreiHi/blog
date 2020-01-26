@@ -1,41 +1,33 @@
 <form class="card" [formGroup]="form" (ngSubmit)="submit()">
   <h2>Войти в панель администратора</h2>
   <div class="form-control"
-  [ngClass]="{ invalid: form.get('email').touched && form.get('email').invalid}"
+       [ngClass]="{ invalid: form.get('email').touched && form.get('email').invalid}"
   >
     <label for="email">Email:</label>
     <input type="email" id="email"
-    formControlName="email">
-    <div *ngIf="form.get('email').touched && form.get('email').errors"
-      class="validation">
-      <small *ngIf="form.get('email').errors.required">
-        Введите поле email.
-      </small>
-      <small *ngIf="form.get('email').errors.email">
-        Введите корректный email
-      </small>
+           formControlName="email">
+    <div *ngFor="let error of validationErrors.email">
+                      <span *ngIf="form.get('email').hasError(error.type)
+                                  && (form.get('email').dirty
+                                  || form.get('email').touched)"
+                            class="validation">{{ error.message }}</span>
     </div>
   </div>
-  <div class="form-control"
+  <div class="form-control pass"
        [ngClass]="{ invalid: form.get('password').touched && form.get('password').invalid }"
   >
     <label for="password">Пароль:</label>
-    <input type="text" id="password"
-    formControlName="password">
-    <div *ngIf="form.get('password').touched && form.get('password').invalid"
-      class="validation">
-      <small  *ngIf="form.get('password').touched && form.get('password').errors.required"
-      >Введите пароль</small>
-      <small  *ngIf="form.get('password').touched && form.get('password').errors.minlength"
-      >Пароль должен быть не менее
-        {{ form.get('password').errors.minlength.requiredLength }}
-        символов. Сейчас он длинной
-        {{form.get('password').errors.minlength.actualLength}}</small>
+    <input type="password" id="password" formControlName="password">
+    <div *ngFor="let error of validationErrors.password">
+                      <span *ngIf="form.get('password').hasError(error.type)
+                                  && (form.get('password').dirty
+                                  || form.get('password').touched)"
+                            class="validation">{{ error.message }}</span>
     </div>
   </div>
   <button type="submit"
           class="btn btn-primary"
-    [disabled]="form.invalid"
+          [disabled]="form.invalid || submitted"
   >Войти</button>
 
 </form>
